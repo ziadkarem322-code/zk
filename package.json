@@ -1,0 +1,42 @@
+{
+  "name": "zk-portfolio",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "seed:extract": "tsx scripts/extract-data.ts",
+    "seed:upload": "tsx scripts/upload-photos.ts",
+    "seed": "tsx scripts/seed.ts"
+  },
+  "dependencies": {
+    "@fontsource/barlow": "^5.1.1",
+    "@fontsource/bebas-neue": "^5.1.1",
+    "@fontsource/ibm-plex-mono": "^5.1.1",
+    "@tanstack/react-query": "^5.64.2",
+    "cloudinary": "^2.5.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.5",
+    "next": "^15.1.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "server-only": "^0.0.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^22.10.5",
+    "@types/react": "^19.0.7",
+    "@types/react-dom": "^19.0.3",
+    "eslint": "^9.18.0",
+    "eslint-config-next": "^15.1.4",
+    "p-limit": "^6.2.0",
+    "tailwindcss": "^4.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}

@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@import "@fontsource/bebas-neue/400.css";
+@import "@fontsource/barlow/300.css";
+@import "@fontsource/barlow/400.css";
+@import "@fontsource/barlow/500.css";
+@import "@fontsource/barlow/600.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
+@theme {
+  --font-display: "Bebas Neue", sans-serif;
+  --font-body: Barlow, sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #0b0d0f;
+  color: #f5f4f2;
+}
