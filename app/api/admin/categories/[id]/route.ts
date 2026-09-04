@@ -34,6 +34,14 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     return NextResponse.json({ error: (err as Error).message }, { status: 400 });
   }
 
+  if (typeof set.slug === "string") {
+    const slug = set.slug.toLowerCase();
+    if (!/^[a-z0-9-]+$/.test(slug)) {
+      return NextResponse.json({ error: "Slug must be lowercase letters, numbers, and hyphens only" }, { status: 400 });
+    }
+    set.slug = slug;
+  }
+
   await connectDb();
   try {
     const category = await Category.findByIdAndUpdate(id, { $set: set }, { new: true, runValidators: true }).lean();

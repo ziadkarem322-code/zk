@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { resolveBackgroundStyle } from "@/lib/imageStyle";
 import { openUploadWidget } from "@/lib/cloudinaryWidget";
+import { deleteUpload } from "@/lib/apiClient";
 import type { Photo } from "@/lib/types";
 import { SliderField } from "./fields";
 
@@ -20,6 +21,7 @@ export function PhotoField({ label, photo, path, resourceType = "image", onPatch
 
   function upload() {
     setUploading(true);
+    const previous = photo.publicId && photo.resourceType ? { publicId: photo.publicId, resourceType: photo.resourceType } : null;
     openUploadWidget(
       (result) => {
         onPatch({
@@ -28,6 +30,10 @@ export function PhotoField({ label, photo, path, resourceType = "image", onPatch
           [`${path}.resourceType`]: result.resourceType,
         });
         setUploading(false);
+        // Best-effort cleanup of the asset being replaced — never block the UI on this.
+        if (previous && previous.publicId !== result.publicId) {
+          deleteUpload(previous.publicId, previous.resourceType).catch(() => {});
+        }
       },
       { resourceType }
     );
