@@ -30,12 +30,12 @@ export function CategorySwitcher({ categories, active, onSelect, loading = false
       role="tablist"
       aria-label="Client type"
       onKeyDown={onKeyDown}
-      className="fixed top-[10px] right-[12px] z-[9999] flex items-stretch gap-[3px] p-[3px] box-border rounded-full border border-white/[.14] print:hidden"
+      className="fixed top-[10px] left-1/2 -translate-x-1/2 z-[9999] flex items-stretch gap-[3px] p-[3px] box-border rounded-full border border-white/[.14] print:hidden"
       style={{
         background: "linear-gradient(150deg, rgba(255,255,255,.20), rgba(255,255,255,.05) 42%, rgba(255,255,255,.12))",
         backdropFilter: "blur(22px) saturate(180%)",
         WebkitBackdropFilter: "blur(22px) saturate(180%)",
-        boxShadow: "inset 0 1px 0 rgba(255,255,255,.45), inset 0 -1px 0 rgba(255,255,255,.12), 0 8px 24px rgba(0,0,0,.32)",
+        boxShadow: "inset 0 1px 0 rgba(255,255,255,.4), 0 10px 32px rgba(0,0,0,.38)",
       }}
     >
       {categories.map((cat, i) => {

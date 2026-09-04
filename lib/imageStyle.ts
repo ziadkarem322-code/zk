@@ -26,23 +26,28 @@ function resolveFocusSizing(photo: Photo) {
   return { focus, sizing };
 }
 
+function formatPhotoUrl(url: string): string {
+  if (url.startsWith("photos/")) return `/${url}`;
+  return url;
+}
+
 /** Standard reel treatment: bottom-up scrim + image. Used by every 9:16 photo box. */
 export function resolveBackgroundStyle(photo?: Photo | null): CSSProperties {
   if (!photo?.url) return { background: EMPTY_PATTERN };
   const { focus, sizing } = resolveFocusSizing(photo);
-  return { background: `${SCRIM}, url('${photo.url}') ${focus}/${sizing} no-repeat` };
+  return { background: `${SCRIM}, url('${formatPhotoUrl(photo.url)}') ${focus}/${sizing} no-repeat` };
 }
 
 /** Cover slide's full-bleed image: two-way scrim (right + top) for left-side text readability. */
 export function resolveCoverBackground(photo?: Photo | null): CSSProperties {
   if (!photo?.url) return { background: EMPTY_PATTERN };
   const { focus, sizing } = resolveFocusSizing(photo);
-  return { background: `${COVER_SCRIM}, url('${photo.url}') ${focus}/${sizing} no-repeat` };
+  return { background: `${COVER_SCRIM}, url('${formatPhotoUrl(photo.url)}') ${focus}/${sizing} no-repeat` };
 }
 
 /** Video poster box: plain image, no scrim (native controls sit on top instead). */
 export function resolveVideoPosterBackground(photo?: Photo | null): CSSProperties {
   if (!photo?.url) return { background: EMPTY_PATTERN };
   const { focus, sizing } = resolveFocusSizing(photo);
-  return { background: `url('${photo.url}') ${focus}/${sizing} no-repeat` };
+  return { background: `url('${formatPhotoUrl(photo.url)}') ${focus}/${sizing} no-repeat` };
 }

@@ -7,7 +7,7 @@ export function CoverSlide({ category, siteSettings }: { category: Category; sit
       <div className="flex flex-col justify-between" style={{ padding: "80px 72px 72px 88px" }}>
         <div className="flex items-center gap-4">
           <span className="w-[38px] h-px bg-[var(--accent)]" />
-          <span className="font-mono text-[24px] tracking-[.22em] uppercase text-[rgba(245,244,242,.6)]">
+          <span className="font-mono text-[26px] tracking-[.22em] uppercase text-[rgba(245,244,242,.6)]">
             {category.discipline || "Independent — AI Image Direction"}
           </span>
         </div>
@@ -27,7 +27,7 @@ export function CoverSlide({ category, siteSettings }: { category: Category; sit
         <div className="flex items-end justify-between pr-[70px]">
           <div className="font-display text-[56px] leading-none tracking-[.06em]">{siteSettings.photographerName}</div>
           <div
-            className="font-body text-[26px] leading-[1.45] text-[rgba(245,244,242,.66)] text-right"
+            className="font-body text-[26px] leading-[1.45] text-[rgba(245,244,242,.66)]"
             style={{ maxWidth: 440, textWrap: "pretty" }}
           >
             {category.tagline}

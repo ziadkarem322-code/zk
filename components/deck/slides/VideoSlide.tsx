@@ -18,7 +18,10 @@ export function VideoSlide({ category }: { category: Category }) {
           <div className="font-display text-[96px] leading-[.9]" style={{ marginTop: 12 }}>
             {category.videoTitle || "MOTION CUT"}
           </div>
-          <div className="font-body text-[28px] leading-[1.45] text-[rgba(245,244,242,.8)]" style={{ marginTop: 24 }}>
+          <div
+            className="font-body text-[28px] leading-[1.45] text-[rgba(245,244,242,.8)]"
+            style={{ marginTop: 24, textWrap: "pretty" }}
+          >
             {category.videoDesc || "A short motion cut from the same session, delivered alongside the stills set."}
           </div>
         </div>
@@ -27,12 +30,12 @@ export function VideoSlide({ category }: { category: Category }) {
           <div className="font-mono text-[24px] tracking-[.14em] uppercase text-[var(--accent)]" style={{ marginBottom: 14 }}>
             Delivery
           </div>
-          <div className="flex flex-wrap" style={{ gap: 12 }}>
+          <div className="flex flex-wrap" style={{ gap: 10 }}>
             {(category.videoSpecs || []).map((spec, i) => (
               <span
                 key={i}
-                className="font-mono text-[24px] rounded-full border border-[rgba(245,244,242,.24)] text-[rgba(245,244,242,.82)]"
-                style={{ padding: "6px 18px" }}
+                className="font-body text-[24px] rounded-full border border-[rgba(245,244,242,.24)] text-[rgba(245,244,242,.82)]"
+                style={{ padding: "8px 20px" }}
               >
                 {spec}
               </span>

@@ -4,14 +4,14 @@ import type { Category } from "@/lib/types";
 export function PackagesSlide({ category }: { category: Category }) {
   return (
     <SlideShell padding="64px 88px" className="grid" style={{ gridTemplateRows: "auto 1fr", gap: 34 }}>
-      <div className="flex justify-between items-start">
+      <div className="flex justify-between items-end">
         <div>
           <div className="font-mono text-[24px] tracking-[.16em] uppercase text-[var(--accent)]" style={{ marginBottom: 16 }}>
             How we work together
           </div>
           <div className="font-display text-[96px] leading-none">{category.packagesTitle}</div>
         </div>
-        <div className="font-body text-[26px] text-[rgba(245,244,242,.66)]" style={{ maxWidth: 520 }}>
+        <div className="font-body text-[26px] leading-[1.45] text-[rgba(245,244,242,.66)]" style={{ maxWidth: 520, textWrap: "pretty" }}>
           {category.packagesNote}
         </div>
       </div>
