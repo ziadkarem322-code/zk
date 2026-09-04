@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchCategory } from "@/lib/apiClient";
 import { buildGradientCss } from "@/lib/gradient";
-import type { Category, CategorySummary } from "@/lib/types";
+import type { Category, CategorySummary, SiteSettings } from "@/lib/types";
 import { Stage } from "./Stage";
 import { CategorySwitcher } from "./CategorySwitcher";
 import { DeckSkeleton } from "./DeckSkeleton";
@@ -22,11 +22,12 @@ interface DeckClientProps {
   categories: CategorySummary[];
   initialSlug: string;
   initialCategory: Category;
+  siteSettings: SiteSettings;
 }
 
-function buildSlides(category: Category) {
+function buildSlides(category: Category, siteSettings: SiteSettings) {
   return [
-    <CoverSlide key="cover" category={category} />,
+    <CoverSlide key="cover" category={category} siteSettings={siteSettings} />,
     <IntroductionSlide key="intro" category={category} />,
     <ContentsSlide key="contents" category={category} />,
     <SelectedWorkSlide key="selected" category={category} />,
@@ -38,7 +39,7 @@ function buildSlides(category: Category) {
   ];
 }
 
-export function DeckClient({ categories, initialSlug, initialCategory }: DeckClientProps) {
+export function DeckClient({ categories, initialSlug, initialCategory, siteSettings }: DeckClientProps) {
   const [activeSlug, setActiveSlug] = useState(initialSlug);
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -53,7 +54,7 @@ export function DeckClient({ categories, initialSlug, initialCategory }: DeckCli
     staleTime: Infinity,
   });
 
-  const slides = useMemo(() => (category ? buildSlides(category) : []), [category]);
+  const slides = useMemo(() => (category ? buildSlides(category, siteSettings) : []), [category, siteSettings]);
   const clampedSlide = Math.min(currentSlide, Math.max(slides.length - 1, 0));
 
   useEffect(() => {

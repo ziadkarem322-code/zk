@@ -102,6 +102,12 @@ export interface Category {
 
 export type CategorySummary = Pick<Category, "_id" | "slug" | "short" | "catName" | "accent" | "order">;
 
+export interface SiteSettings {
+  photographerName: string;
+  wordmarkStart: string;
+  wordmarkEnd: string;
+}
+
 export const emptyPhoto = (): Photo => ({
   resourceType: "image",
   fit: "cover",

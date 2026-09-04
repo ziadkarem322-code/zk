@@ -1,5 +1,5 @@
 import { DeckClient } from "@/components/deck/DeckClient";
-import { getCategoryBySlug, getCategorySummaries } from "@/lib/serverData";
+import { getCategoryBySlug, getCategorySummaries, getSiteSettings } from "@/lib/serverData";
 
 export const dynamic = "force-dynamic";
 
@@ -20,11 +20,18 @@ export default async function HomePage({
 
   const { category: requestedSlug } = await searchParams;
   const initialSlug = categories.find((c) => c.slug === requestedSlug)?.slug ?? categories[0].slug;
-  const initialCategory = await getCategoryBySlug(initialSlug);
+  const [initialCategory, siteSettings] = await Promise.all([getCategoryBySlug(initialSlug), getSiteSettings()]);
 
   if (!initialCategory) {
     return null;
   }
 
-  return <DeckClient categories={categories} initialSlug={initialSlug} initialCategory={initialCategory} />;
+  return (
+    <DeckClient
+      categories={categories}
+      initialSlug={initialSlug}
+      initialCategory={initialCategory}
+      siteSettings={siteSettings}
+    />
+  );
 }

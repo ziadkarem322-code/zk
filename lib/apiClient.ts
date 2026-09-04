@@ -1,4 +1,4 @@
-import type { Category, CategorySummary } from "@/lib/types";
+import type { Category, CategorySummary, SiteSettings } from "@/lib/types";
 
 async function request<T>(url: string, init?: RequestInit): Promise<T> {
   const res = await fetch(url, {
@@ -15,6 +15,7 @@ async function request<T>(url: string, init?: RequestInit): Promise<T> {
 // Public
 export const fetchCategories = () => request<CategorySummary[]>("/api/categories");
 export const fetchCategory = (slug: string) => request<Category>(`/api/categories/${slug}`);
+export const fetchSiteSettings = () => request<SiteSettings>("/api/site-settings");
 
 // Admin auth
 export const adminLogin = (password: string) =>
@@ -46,6 +47,11 @@ export const adminAddGridPhoto = (categoryId: string) =>
   request<Category>(`/api/admin/categories/${categoryId}/grid-photos`, { method: "POST" });
 export const adminDeleteGridPhoto = (categoryId: string, index: number) =>
   request<Category>(`/api/admin/categories/${categoryId}/grid-photos/${index}`, { method: "DELETE" });
+
+// Site settings
+export const adminFetchSiteSettings = () => request<SiteSettings>("/api/admin/site-settings");
+export const adminPatchSiteSettings = (set: Record<string, unknown>) =>
+  request<SiteSettings>("/api/admin/site-settings", { method: "PATCH", body: JSON.stringify(set) });
 
 // Uploads
 export interface UploadSignature {

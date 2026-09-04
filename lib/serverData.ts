@@ -1,6 +1,7 @@
 import { connectDb } from "@/lib/db";
 import { Category } from "./models/Category";
-import type { Category as CategoryType, CategorySummary } from "@/lib/types";
+import { SiteSettings } from "./models/SiteSettings";
+import type { Category as CategoryType, CategorySummary, SiteSettings as SiteSettingsType } from "@/lib/types";
 
 function serialize<T>(data: T): T {
   return JSON.parse(JSON.stringify(data));
@@ -16,5 +17,12 @@ export async function getCategoryBySlug(slug: string): Promise<CategoryType | nu
   await connectDb();
   const doc = await Category.findOne({ slug: slug.toLowerCase() }).lean();
   return doc ? (serialize(doc) as unknown as CategoryType) : null;
+}
+
+/** Singleton doc — lazily created with schema defaults on first read. */
+export async function getSiteSettings(): Promise<SiteSettingsType> {
+  await connectDb();
+  const doc = await SiteSettings.findOneAndUpdate({}, {}, { upsert: true, new: true, setDefaultsOnInsert: true }).lean();
+  return serialize(doc) as unknown as SiteSettingsType;
 }
 

@@ -1,7 +1,7 @@
 import { resolveCoverBackground } from "@/lib/imageStyle";
-import type { Category } from "@/lib/types";
+import type { Category, SiteSettings } from "@/lib/types";
 
-export function CoverSlide({ category }: { category: Category }) {
+export function CoverSlide({ category, siteSettings }: { category: Category; siteSettings: SiteSettings }) {
   return (
     <section className="absolute inset-0 box-border overflow-hidden bg-[var(--bg)] text-[#f5f4f2] grid grid-cols-2">
       <div className="flex flex-col justify-between" style={{ padding: "80px 72px 72px 88px" }}>
@@ -14,7 +14,8 @@ export function CoverSlide({ category }: { category: Category }) {
 
         <div>
           <div className="font-display text-[212px] leading-[.86] tracking-[.01em]">
-            PORT<span className="text-[var(--accent)]">FOLIO</span>
+            {siteSettings.wordmarkStart}
+            <span className="text-[var(--accent)]">{siteSettings.wordmarkEnd}</span>
           </div>
           <div className="flex items-baseline gap-5 mt-[26px] flex-nowrap font-mono text-[24px] tracking-[.08em] uppercase text-[rgba(245,244,242,.78)]">
             <span className="whitespace-nowrap">{category.catName}</span>
@@ -24,7 +25,7 @@ export function CoverSlide({ category }: { category: Category }) {
         </div>
 
         <div className="flex items-baseline justify-between">
-          <div className="font-display text-[56px] leading-none tracking-[.06em]">zk</div>
+          <div className="font-display text-[56px] leading-none tracking-[.06em]">{siteSettings.photographerName}</div>
           <div
             className="font-body text-[26px] leading-[1.45] text-[rgba(245,244,242,.66)] text-right"
             style={{ maxWidth: 440, textWrap: "pretty" }}

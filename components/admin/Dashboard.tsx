@@ -10,6 +10,7 @@ import {
   adminReorderCategories,
 } from "@/lib/apiClient";
 import { AdminSkeleton } from "./AdminSkeleton";
+import { SiteSettingsCard } from "./SiteSettingsCard";
 
 export function Dashboard() {
   const queryClient = useQueryClient();
@@ -58,6 +59,8 @@ export function Dashboard() {
 
   return (
     <div className="flex flex-col gap-8 max-w-3xl">
+      <SiteSettingsCard />
+
       <div className="flex flex-col gap-4">
         {categories?.map((cat, i) => (
           <div
