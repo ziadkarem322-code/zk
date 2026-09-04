@@ -3,7 +3,11 @@ import { getCategoryBySlug, getCategorySummaries } from "@/lib/serverData";
 
 export const dynamic = "force-dynamic";
 
-export default async function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>;
+}) {
   const categories = await getCategorySummaries();
 
   if (categories.length === 0) {
@@ -14,7 +18,8 @@ export default async function HomePage() {
     );
   }
 
-  const initialSlug = categories[0].slug;
+  const { category: requestedSlug } = await searchParams;
+  const initialSlug = categories.find((c) => c.slug === requestedSlug)?.slug ?? categories[0].slug;
   const initialCategory = await getCategoryBySlug(initialSlug);
 
   if (!initialCategory) {

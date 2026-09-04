@@ -4,11 +4,39 @@ import { getUploadSignature } from "@/lib/apiClient";
 
 const WIDGET_SRC = "https://upload-widget.cloudinary.com/global/all.js";
 
+interface CloudinaryWidgetInfo {
+  public_id: string;
+  secure_url: string;
+  resource_type: string;
+}
+
+interface CloudinaryWidgetResult {
+  event: string;
+  info: CloudinaryWidgetInfo;
+}
+
+interface CloudinaryWidget {
+  open: () => void;
+}
+
+interface CloudinaryGlobal {
+  createUploadWidget: (
+    options: Record<string, unknown>,
+    callback: (error: unknown, result: CloudinaryWidgetResult | undefined) => void
+  ) => CloudinaryWidget;
+}
+
+declare global {
+  interface Window {
+    cloudinary?: CloudinaryGlobal;
+  }
+}
+
 let loadPromise: Promise<void> | null = null;
 
 function loadWidgetScript(): Promise<void> {
   if (typeof window === "undefined") return Promise.resolve();
-  if ((window as any).cloudinary) return Promise.resolve();
+  if (window.cloudinary) return Promise.resolve();
   if (loadPromise) return loadPromise;
 
   loadPromise = new Promise((resolve, reject) => {
@@ -36,7 +64,9 @@ export async function openUploadWidget(
   await loadWidgetScript();
   const sig = await getUploadSignature();
 
-  const widget = (window as any).cloudinary.createUploadWidget(
+  if (!window.cloudinary) return;
+
+  const widget = window.cloudinary.createUploadWidget(
     {
       cloudName: sig.cloudName,
       apiKey: sig.apiKey,
@@ -48,14 +78,13 @@ export async function openUploadWidget(
       multiple: false,
       sources: ["local", "url", "camera"],
     },
-    (error: unknown, result: any) => {
-      if (error) return;
-      if (result?.event === "success") {
-        const info = result.info;
+    (error, result) => {
+      if (error || !result) return;
+      if (result.event === "success") {
         onSuccess({
-          publicId: info.public_id,
-          url: info.secure_url,
-          resourceType: info.resource_type === "video" ? "video" : "image",
+          publicId: result.info.public_id,
+          url: result.info.secure_url,
+          resourceType: result.info.resource_type === "video" ? "video" : "image",
         });
       }
     }

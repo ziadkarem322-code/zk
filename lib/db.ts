@@ -5,7 +5,6 @@ import { env } from "./env";
 // Next.js dev/hot-reload creates multiple module instances; cache the
 // connection promise on the global object so we never open a second one.
 declare global {
-  // eslint-disable-next-line no-var
   var __mongooseConn: Promise<typeof mongoose> | undefined;
 }
 
