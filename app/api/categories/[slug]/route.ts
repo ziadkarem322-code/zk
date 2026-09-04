@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { getCategoryBySlug } from "@/lib/serverData";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(_req: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   try {
