@@ -4,10 +4,12 @@ import type { Category as CategoryType, CategorySummary } from "@/lib/types";
 
 export async function getCategorySummaries(): Promise<CategorySummary[]> {
   await connectDb();
-  return Category.find({}, "slug short catName accent order").sort({ order: 1 }).lean<CategorySummary[]>();
+  const docs = await Category.find({}, "slug short catName accent order").sort({ order: 1 }).lean();
+  return serialize(docs) as CategorySummary[];
 }
 
 export async function getCategoryBySlug(slug: string): Promise<CategoryType | null> {
   await connectDb();
-  return Category.findOne({ slug: slug.toLowerCase() }).lean<CategoryType | null>();
+  const doc = await Category.findOne({ slug: slug.toLowerCase() }).lean();
+  return doc ? (serialize(doc) as CategoryType) : null;
 }
