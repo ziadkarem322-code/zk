@@ -1,5 +1,5 @@
 import { connectDb } from "@/lib/db";
-import { Category } from "@/lib/models/Category";
+import { Category } from "./models/Category";
 import type { Category as CategoryType, CategorySummary } from "@/lib/types";
 
 function serialize<T>(data: T): T {
