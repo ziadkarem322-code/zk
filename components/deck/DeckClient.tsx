@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchCategory } from "@/lib/apiClient";
 import { buildGradientCss } from "@/lib/gradient";
 import type { Category, CategorySummary } from "@/lib/types";
 import { Stage } from "./Stage";
 import { CategorySwitcher } from "./CategorySwitcher";
+import { DeckSkeleton } from "./DeckSkeleton";
 import { CoverSlide } from "./slides/CoverSlide";
 import { IntroductionSlide } from "./slides/IntroductionSlide";
 import { ContentsSlide } from "./slides/ContentsSlide";
@@ -41,10 +42,14 @@ export function DeckClient({ categories, initialSlug, initialCategory }: DeckCli
   const [activeSlug, setActiveSlug] = useState(initialSlug);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const { data: category } = useQuery({
+  const { data: category, isFetching } = useQuery({
     queryKey: ["category", activeSlug],
     queryFn: () => fetchCategory(activeSlug),
     initialData: activeSlug === initialSlug ? initialCategory : undefined,
+    // Keep showing the previous category's deck while the next one loads,
+    // instead of a blank flash — the switcher's own loading pulse (below)
+    // is the only feedback the switch is in flight.
+    placeholderData: keepPreviousData,
     staleTime: Infinity,
   });
 
@@ -64,7 +69,7 @@ export function DeckClient({ categories, initialSlug, initialCategory }: DeckCli
   }, [slides.length]);
 
   if (!category) {
-    return <div className="fixed inset-0 bg-[#0b0d0f]" />;
+    return <DeckSkeleton />;
   }
 
   const vars = {
@@ -74,7 +79,7 @@ export function DeckClient({ categories, initialSlug, initialCategory }: DeckCli
 
   return (
     <>
-      <CategorySwitcher categories={categories} active={activeSlug} onSelect={setActiveSlug} />
+      <CategorySwitcher categories={categories} active={activeSlug} onSelect={setActiveSlug} loading={isFetching} />
       <Stage vars={vars}>{slides[clampedSlide]}</Stage>
     </>
   );

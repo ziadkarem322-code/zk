@@ -9,6 +9,7 @@ import {
   adminFetchCategories,
   adminReorderCategories,
 } from "@/lib/apiClient";
+import { AdminSkeleton } from "./AdminSkeleton";
 
 export function Dashboard() {
   const queryClient = useQueryClient();
@@ -53,7 +54,7 @@ export function Dashboard() {
     reorderMutation.mutate(next.map((c, i) => ({ id: c._id, order: i })));
   }
 
-  if (isLoading) return <p className="text-neutral-400">Loading…</p>;
+  if (isLoading) return <AdminSkeleton />;
 
   return (
     <div className="flex flex-col gap-8 max-w-3xl">

@@ -7,10 +7,12 @@ interface Props {
   categories: CategorySummary[];
   active: string;
   onSelect: (slug: string) => void;
+  /** True while the active category's data is (re)loading — pulses the active button as feedback. */
+  loading?: boolean;
 }
 
 /** The signature liquid-glass pill. Each button's active state previews *its own* accent, not the current one. */
-export function CategorySwitcher({ categories, active, onSelect }: Props) {
+export function CategorySwitcher({ categories, active, onSelect, loading = false }: Props) {
   const btnRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   function onKeyDown(e: React.KeyboardEvent) {
@@ -50,7 +52,7 @@ export function CategorySwitcher({ categories, active, onSelect }: Props) {
             onClick={() => onSelect(cat.slug)}
             className={`appearance-none cursor-pointer border-none font-mono text-[9px] tracking-[.1em] uppercase px-3 h-[22px] rounded-full flex-none min-w-0 whitespace-nowrap flex items-center justify-center leading-none transition-all duration-[180ms] ease-out ${
               isActive ? "opacity-100" : "opacity-80 hover:opacity-100"
-            }`}
+            } ${isActive && loading ? "animate-pulse" : ""}`}
             style={{
               background: isActive ? cat.accent : "transparent",
               color: isActive ? "#101214" : "rgba(255,255,255,.68)",

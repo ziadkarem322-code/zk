@@ -13,6 +13,7 @@ import { PackagesTab } from "./tabs/PackagesTab";
 import { ClientsQuoteTab } from "./tabs/ClientsQuoteTab";
 import { ContactTab } from "./tabs/ContactTab";
 import { ProjectsTab } from "./tabs/ProjectsTab";
+import { AdminSkeleton } from "./AdminSkeleton";
 
 const TABS = [
   "Identity & Colors",
@@ -50,7 +51,7 @@ export function CategoryEditor({ id }: { id: string }) {
     patchMutation.mutate(set);
   }
 
-  if (isLoading || !category) return <p className="text-neutral-400">Loading…</p>;
+  if (isLoading || !category) return <AdminSkeleton />;
 
   return (
     <div className="flex flex-col gap-6 max-w-4xl">
