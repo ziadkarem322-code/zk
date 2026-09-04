@@ -24,7 +24,7 @@ export function CoverSlide({ category, siteSettings }: { category: Category; sit
           </div>
         </div>
 
-        <div className="flex items-baseline justify-between">
+        <div className="flex items-end justify-between pr-[70px]">
           <div className="font-display text-[56px] leading-none tracking-[.06em]">{siteSettings.photographerName}</div>
           <div
             className="font-body text-[26px] leading-[1.45] text-[rgba(245,244,242,.66)] text-right"

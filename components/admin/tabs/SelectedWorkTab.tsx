@@ -24,6 +24,14 @@ export function SelectedWorkTab({ category, categoryId, onPatch }: Props) {
     onSuccess: (updated) => queryClient.setQueryData(["admin-category", categoryId], updated),
   });
 
+  function move(index: number, dir: -1 | 1) {
+    const target = index + dir;
+    if (target < 0 || target >= category.gridPhotos.length) return;
+    const a = category.gridPhotos[index];
+    const b = category.gridPhotos[target];
+    onPatch({ [`gridPhotos.${index}`]: b, [`gridPhotos.${target}`]: a });
+  }
+
   return (
     <div className="flex flex-col gap-6">
       <Section title="Selected Work">
@@ -32,8 +40,7 @@ export function SelectedWorkTab({ category, categoryId, onPatch }: Props) {
 
       <div className="flex items-center justify-between">
         <p className="text-xs text-neutral-500">
-          Only the first 3 photos below render on the public slide. Reorder isn&apos;t available yet — delete and
-          re-add to change which 3 show.
+          Only the first 3 photos below render on the public slide — reorder with ▲/▼ to change which 3 show.
         </p>
         <button
           onClick={() => addMutation.mutate()}
@@ -51,9 +58,21 @@ export function SelectedWorkTab({ category, categoryId, onPatch }: Props) {
               <span className="text-xs text-neutral-400">
                 #{i + 1} {i < 3 ? "(rendered)" : "(reserve)"}
               </span>
-              <button onClick={() => removeMutation.mutate(i)} className="text-xs text-red-400 hover:text-red-300">
-                Remove
-              </button>
+              <div className="flex items-center gap-3">
+                <button onClick={() => move(i, -1)} disabled={i === 0} className="text-xs text-neutral-400 hover:text-neutral-100 disabled:opacity-30">
+                  ▲
+                </button>
+                <button
+                  onClick={() => move(i, 1)}
+                  disabled={i === category.gridPhotos.length - 1}
+                  className="text-xs text-neutral-400 hover:text-neutral-100 disabled:opacity-30"
+                >
+                  ▼
+                </button>
+                <button onClick={() => removeMutation.mutate(i)} className="text-xs text-red-400 hover:text-red-300">
+                  Remove
+                </button>
+              </div>
             </div>
             <TextField label="Caption" value={item.caption} onCommit={(v) => onPatch({ [`gridPhotos.${i}.caption`]: v })} />
             <PhotoField label="Photo" photo={item.photo} path={`gridPhotos.${i}.photo`} onPatch={onPatch} />

@@ -30,7 +30,7 @@ export function CategorySwitcher({ categories, active, onSelect, loading = false
       role="tablist"
       aria-label="Client type"
       onKeyDown={onKeyDown}
-      className="fixed top-[10px] right-[12px] z-[9999] flex items-stretch gap-[3px] p-[3px] box-border rounded-full border border-white/[.14]"
+      className="fixed top-[10px] right-[12px] z-[9999] flex items-stretch gap-[3px] p-[3px] box-border rounded-full border border-white/[.14] print:hidden"
       style={{
         background: "linear-gradient(150deg, rgba(255,255,255,.20), rgba(255,255,255,.05) 42%, rgba(255,255,255,.12))",
         backdropFilter: "blur(22px) saturate(180%)",

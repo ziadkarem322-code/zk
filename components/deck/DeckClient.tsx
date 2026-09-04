@@ -8,15 +8,11 @@ import type { Category, CategorySummary, SiteSettings } from "@/lib/types";
 import { Stage } from "./Stage";
 import { CategorySwitcher } from "./CategorySwitcher";
 import { DeckSkeleton } from "./DeckSkeleton";
-import { CoverSlide } from "./slides/CoverSlide";
-import { IntroductionSlide } from "./slides/IntroductionSlide";
-import { ContentsSlide } from "./slides/ContentsSlide";
-import { SelectedWorkSlide } from "./slides/SelectedWorkSlide";
-import { VideoSlide } from "./slides/VideoSlide";
-import { ProjectSlide } from "./slides/ProjectSlide";
-import { PackagesSlide } from "./slides/PackagesSlide";
-import { ClientsSlide } from "./slides/ClientsSlide";
-import { ContactSlide } from "./slides/ContactSlide";
+import { DeckToolbar } from "./DeckToolbar";
+import { ThumbnailRail } from "./ThumbnailRail";
+import { SpeakerNotesPanel } from "./SpeakerNotesPanel";
+import { PrintDeck } from "./PrintDeck";
+import { buildSlideEntries } from "./slideMeta";
 
 interface DeckClientProps {
   categories: CategorySummary[];
@@ -25,23 +21,11 @@ interface DeckClientProps {
   siteSettings: SiteSettings;
 }
 
-function buildSlides(category: Category, siteSettings: SiteSettings) {
-  return [
-    <CoverSlide key="cover" category={category} siteSettings={siteSettings} />,
-    <IntroductionSlide key="intro" category={category} />,
-    <ContentsSlide key="contents" category={category} />,
-    <SelectedWorkSlide key="selected" category={category} />,
-    <VideoSlide key="video" category={category} />,
-    ...category.projects.map((p, i) => <ProjectSlide key={`project-${i}`} project={p} />),
-    <PackagesSlide key="packages" category={category} />,
-    <ClientsSlide key="clients" category={category} />,
-    <ContactSlide key="contact" category={category} />,
-  ];
-}
-
 export function DeckClient({ categories, initialSlug, initialCategory, siteSettings }: DeckClientProps) {
   const [activeSlug, setActiveSlug] = useState(initialSlug);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [showRail, setShowRail] = useState(false);
+  const [showNotes, setShowNotes] = useState(false);
 
   const { data: category, isFetching } = useQuery({
     queryKey: ["category", activeSlug],
@@ -54,15 +38,23 @@ export function DeckClient({ categories, initialSlug, initialCategory, siteSetti
     staleTime: Infinity,
   });
 
-  const slides = useMemo(() => (category ? buildSlides(category, siteSettings) : []), [category, siteSettings]);
+  const slides = useMemo(() => (category ? buildSlideEntries(category, siteSettings) : []), [category, siteSettings]);
   const clampedSlide = Math.min(currentSlide, Math.max(slides.length - 1, 0));
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
+      const target = e.target as HTMLElement;
+      if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") return;
       if (e.key === "ArrowRight") {
         setCurrentSlide((s) => Math.min(s + 1, slides.length - 1));
       } else if (e.key === "ArrowLeft") {
         setCurrentSlide((s) => Math.max(s - 1, 0));
+      } else if (e.key === "t" || e.key === "T") {
+        setShowRail((v) => !v);
+      } else if (e.key === "n" || e.key === "N") {
+        setShowNotes((v) => !v);
+      } else if (e.key === "p" || e.key === "P") {
+        window.print();
       }
     }
     window.addEventListener("keydown", onKeyDown);
@@ -80,8 +72,20 @@ export function DeckClient({ categories, initialSlug, initialCategory, siteSetti
 
   return (
     <>
+      <DeckToolbar
+        showRail={showRail}
+        onToggleRail={() => setShowRail((v) => !v)}
+        showNotes={showNotes}
+        onToggleNotes={() => setShowNotes((v) => !v)}
+        onPrint={() => window.print()}
+      />
       <CategorySwitcher categories={categories} active={activeSlug} onSelect={setActiveSlug} loading={isFetching} />
-      <Stage vars={vars}>{slides[clampedSlide]}</Stage>
+      <Stage vars={vars}>{slides[clampedSlide]?.node}</Stage>
+      {showNotes && slides[clampedSlide] && <SpeakerNotesPanel slide={slides[clampedSlide]} />}
+      {showRail && (
+        <ThumbnailRail slides={slides} current={clampedSlide} onSelect={setCurrentSlide} vars={vars} accent={category.accent} />
+      )}
+      <PrintDeck slides={slides} vars={vars} />
     </>
   );
 }

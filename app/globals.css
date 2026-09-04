@@ -24,3 +24,17 @@ body {
   background: #0b0d0f;
   color: #f5f4f2;
 }
+
+/* One slide per page at native design resolution — Chromium supports
+   arbitrary pixel @page sizes, so no print-time scaling math is needed. */
+@media print {
+  @page {
+    size: 1920px 1080px;
+    margin: 0;
+  }
+  html,
+  body {
+    margin: 0 !important;
+    background: none !important;
+  }
+}

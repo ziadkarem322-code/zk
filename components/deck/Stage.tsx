@@ -13,7 +13,7 @@ export function Stage({ children, vars }: StageProps) {
   const { containerRef, scale } = useStageScale();
 
   return (
-    <div ref={containerRef} className="fixed inset-0 flex items-center justify-center overflow-hidden bg-[#0b0d0f]">
+    <div ref={containerRef} className="fixed inset-0 flex items-center justify-center overflow-hidden bg-[#0b0d0f] print:hidden">
       <div
         className="relative shrink-0 font-body"
         style={{
