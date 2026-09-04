@@ -1,4 +1,3 @@
-import "server-only";
 import { connectDb } from "@/lib/db";
 import { Category } from "@/lib/models/Category";
 import type { Category as CategoryType, CategorySummary } from "@/lib/types";

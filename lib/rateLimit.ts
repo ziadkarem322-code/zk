@@ -1,5 +1,3 @@
-import "server-only";
-
 /**
  * Minimal in-memory fixed-window limiter for the login route. Good enough for
  * a single-instance deployment guarding a single admin password; not meant to
