@@ -1,9 +1,8 @@
 import { Schema } from "mongoose";
-import type { Project } from "@/lib/types";
 import { photoSchema } from "./photoSchema";
 import { captionedPhotoSchema } from "./captionedPhotoSchema";
 
-export const projectSchema = new Schema<Project>({
+export const projectSchema = new Schema({
   label: { type: String, default: "" },
   kicker: { type: String, default: "" },
   year: { type: String, default: "" },

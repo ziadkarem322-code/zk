@@ -8,7 +8,8 @@ export const SESSION_COOKIE = "zk_admin_session";
 export const SESSION_MAX_AGE_SECONDS = 12 * 60 * 60;
 
 export function signAdminToken() {
-  return jwt.sign({ role: "admin" }, env.JWT_SECRET, { expiresIn: env.JWT_EXPIRES_IN });
+  const options = { expiresIn: env.JWT_EXPIRES_IN } as jwt.SignOptions;
+  return jwt.sign({ role: "admin" }, env.JWT_SECRET, options);
 }
 
 export function verifyAdminToken(token: string | undefined): boolean {

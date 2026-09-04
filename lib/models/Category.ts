@@ -1,5 +1,4 @@
 import { Schema, model, models } from "mongoose";
-import type { Category as CategoryType } from "@/lib/types";
 import { photoSchema } from "./shared/photoSchema";
 import { captionedPhotoSchema } from "./shared/captionedPhotoSchema";
 import { projectSchema } from "./shared/projectSchema";
@@ -25,7 +24,7 @@ const packageSchema = new Schema(
 );
 const contactItemSchema = new Schema({ k: { type: String, default: "" }, v: { type: String, default: "" } }, { _id: false });
 
-const categorySchema = new Schema<Omit<CategoryType, "_id">>(
+const categorySchema = new Schema(
   {
     slug: { type: String, required: true, unique: true, lowercase: true, trim: true },
     order: { type: Number, default: 0 },

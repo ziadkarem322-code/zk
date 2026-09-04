@@ -1,11 +1,14 @@
 import { Schema } from "mongoose";
-import type { Photo } from "@/lib/types";
 
 /**
  * Backs every image/video slot in a Category or Project. An empty {} means
  * "no photo assigned", rendered client-side as the placeholder pattern.
+ *
+ * No explicit generic here deliberately — Mongoose's TS typings fight the
+ * `{ type: [subSchema], default }` array-of-subdocument syntax when a strict
+ * generic is supplied. Consumers assert shape at the call site via .lean<T>().
  */
-export const photoSchema = new Schema<Photo>(
+export const photoSchema = new Schema(
   {
     publicId: { type: String },
     url: { type: String },
